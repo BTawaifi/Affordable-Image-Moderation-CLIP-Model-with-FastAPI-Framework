@@ -15,8 +15,8 @@ export class ClipService {
     image: MulterFile,
     classes: string,
   ): Promise<{
-    prediction: string;
-    labelProbabilities: { [key: string]: number };
+    clipPrediction: string;
+    clipLabelProbabilities: { [key: string]: number };
   }> {
     try {
       const formData = new FormData();

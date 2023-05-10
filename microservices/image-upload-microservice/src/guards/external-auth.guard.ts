@@ -8,14 +8,14 @@ import {
 import { Observable } from 'rxjs';
 import { Inject } from '@nestjs/common';
 import { ClientProxy } from '@nestjs/microservices';
+import { HttpService } from '@nestjs/axios';
+import { HttpModule } from '@nestjs/axios';
 
 @Injectable()
 export class ExternalAuthGuard implements CanActivate {
-  constructor(@Inject('AUTH_MICROSERVICE') private client: ClientProxy) { }
+  constructor(private httpService: HttpService) {}
 
-  canActivate(
-    context: ExecutionContext,
-  ): boolean | Promise<boolean> | Observable<boolean> {
+  async canActivate(context: ExecutionContext): Promise<boolean> {
     const request = context.switchToHttp().getRequest();
     const token = request.headers.authorization?.split(' ')[1];
 
@@ -23,14 +23,20 @@ export class ExternalAuthGuard implements CanActivate {
       throw new UnauthorizedException('Missing token');
     }
 
-    return this.client
-      .send({ cmd: 'verify-token' }, { token })
-      .toPromise()
-      .then((isValid: boolean) => {
-        if (!isValid) {
-          throw new UnauthorizedException('Invalid token');
-        }
-        return true;
-      });
+    try {
+      const response = await this.httpService
+        .post('http://localhost:8000/auth/verify-token', { token })
+        .toPromise();
+
+      const isValid = response.data.isValid;
+
+      if (!isValid) {
+        throw new UnauthorizedException('Invalid token');
+      }
+
+      return true;
+    } catch (error) {
+      throw new UnauthorizedException('Error verifying token');
+    }
   }
 }
