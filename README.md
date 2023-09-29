@@ -23,6 +23,10 @@ The main goal of this study is to create an affordable, efficient, and adaptable
 The proposed system utilizes OpenAI's CLIP model for image classification tasks and FastAPI for designing an asynchronous RESTful API.
 It is aimed at dynamically handling multiple classification scenarios,thereby enhancing the accessibility and utility of image classification technology in real-world applications.
 
+## Full System Diagram:
+
+![Picture1](https://github.com/BTawaifi/Affordable-Image-Moderation-CLIP-Model-with-FastAPI-Framework/assets/52285931/822268be-c763-4eba-92fd-f772299a4f62)
+
 ## Conclusion
 
 Our FastAPI and CLIP-based image classifier development remains a work in progress.
