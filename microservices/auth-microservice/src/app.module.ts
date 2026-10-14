@@ -7,12 +7,12 @@ import { UserModule } from './entity/user/user.module';
 @Module({
   imports: [
     TypeOrmModule.forRoot({
-      type: 'postgres',
-      host: 'localhost',
-      port: 5432,
-      username: 'your-username',
+      type: 'mysql', // Change the type to 'mysql'
+      host: 'localhost', // Update the host if needed
+      port: 3306, // Update the port if needed
+      username: 'root',
       password: '***REDACTED***',
-      database: 'your-database',
+      database: 'image_moderation_auth', // Use the name of the schema you created
       entities: [__dirname + '/**/*.entity{.ts,.js}'], // Use a glob pattern to load all entities
       synchronize: true,
     }),

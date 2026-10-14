@@ -7,7 +7,7 @@ import { LocalStrategy } from './local.strategy';
 import { JwtStrategy } from './jwt.strategy';
 import { HttpModule } from '@nestjs/axios';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { UserRepository } from '../entity/user/user.repository'; // Import UserRepository
+import { User } from 'src/entity/user/user.entity';
 
 @Module({
   imports: [
@@ -17,10 +17,10 @@ import { UserRepository } from '../entity/user/user.repository'; // Import UserR
       signOptions: { expiresIn: '1h' },
     }),
     HttpModule, // Add HttpModule
-    TypeOrmModule.forFeature([UserRepository]), // Add UserRepository to the imports
+    TypeOrmModule.forFeature([User]),
   ],
   controllers: [AuthController],
-  providers: [AuthService, LocalStrategy, JwtStrategy, UserRepository], // Add UserRepository to the providers
+  providers: [AuthService, LocalStrategy, JwtStrategy], // Add UserRepository to the providers
   exports: [AuthService],
 })
 export class AuthModule {}

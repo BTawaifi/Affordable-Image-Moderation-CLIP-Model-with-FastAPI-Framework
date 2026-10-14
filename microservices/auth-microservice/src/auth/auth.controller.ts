@@ -21,8 +21,6 @@ export class AuthController {
   @UseGuards(AuthGuard('local'))
   @Post('login')
   async login(@Request() req): Promise<any> {
-    console.log('POSTED');
-
     return this.authService.login(req.user);
   }
 
@@ -32,7 +30,11 @@ export class AuthController {
     try {
       const { token } = body;
       const decodedToken = this.jwtService.verify(token);
-      return { userId: decodedToken.sub, username: decodedToken.username };
+      return {
+        userId: decodedToken.sub,
+        username: decodedToken.username,
+        isValid: true,
+      };
     } catch (e) {
       throw new UnauthorizedException('Invalid token');
     }

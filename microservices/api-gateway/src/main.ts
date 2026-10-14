@@ -5,7 +5,7 @@ import { NestExpressApplication } from '@nestjs/platform-express';
 import * as dotenv from 'dotenv';
 import { join } from 'path';
 import { HttpExceptionFilter } from './http-exception.filter';
-import proxy from 'http-proxy-middleware';
+import { createProxyMiddleware } from 'http-proxy-middleware';
 import { proxyConfig } from './proxy.config';
 import rateLimit from 'express-rate-limit';
 import helmet from 'helmet';
@@ -28,11 +28,11 @@ async function bootstrap() {
   app.setBaseViewsDir(join(__dirname, '..', 'views'));
   app.setViewEngine('hbs');
 
-  Object.entries(proxyConfig).forEach(([route, config]) => {
-    app.use(route, proxy.createProxyMiddleware(config));
-  });
+   Object.entries(proxyConfig).forEach(([route, config]) => {
+    app.use(route, createProxyMiddleware(config));
+  }); 
 
-  const port = process.env.PORT || 8080;
+  const port = process.env.PORT || 5000;
   await app.listen(port, () => {
     console.log(`API Gateway is running on port ${port}`);
   });

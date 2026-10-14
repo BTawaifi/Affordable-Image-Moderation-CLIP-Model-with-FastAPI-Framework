@@ -1,4 +1,4 @@
-import { NestFactory } from '@nestjs/core';
+/* import { NestFactory } from '@nestjs/core';
 import { MicroserviceOptions, Transport } from '@nestjs/microservices';
 import { AppModule } from './app.module';
 
@@ -8,10 +8,23 @@ async function bootstrap() {
     {
       transport: Transport.TCP,
       options: {
-        port: 8000,
+        port: 5010,
       },
     },
   );
   await app.listen();
+}
+bootstrap();
+ */
+
+
+import { NestFactory } from "@nestjs/core";
+import { AppModule } from "./app.module";
+import { GlobalExceptionFilter } from "./filters/global-exception.filter";
+
+async function bootstrap() {
+  const app = await NestFactory.create(AppModule);
+  app.useGlobalFilters(new GlobalExceptionFilter());
+  await app.listen(5010);
 }
 bootstrap();

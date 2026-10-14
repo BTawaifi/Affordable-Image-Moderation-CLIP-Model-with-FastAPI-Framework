@@ -24,6 +24,9 @@ import { GlobalExceptionFilter } from "./filters/global-exception.filter";
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
   app.useGlobalFilters(new GlobalExceptionFilter());
-  await app.listen(5000);
+  const port = process.env.PORT || 5020;
+  await app.listen(port, () => {
+    console.log(`Image Upload Microservice is running on port ${port}`);
+  });
 }
 bootstrap();

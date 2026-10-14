@@ -1,29 +1,20 @@
 export const proxyConfig = {
-  '/clip/*': {
-    target: 'http://localhost:3000',
-    changeOrigin: true,
-  },
-  '/resnet/*': {
-    target: 'http://localhost:4000',
+  '/auth/*': {
+    target: process.env.AUTH_SERVICE_URL || 'http://localhost:5010',
     changeOrigin: true,
   },
   '/images/*': {
-    target: 'http://localhost:5000',
+    target: process.env.IMAGE_SERVICE_URL || 'http://localhost:5020',
     changeOrigin: true,
   },
-  '/flagging/*': {
-    target: 'http://localhost:6000',
-    changeOrigin: true,
-  },
-  '/analytics/*': {
-    target: 'http://localhost:7000',
-    changeOrigin: true,
-  },
-  '/auth/*': {
-    target: 'http://localhost:8000',
+  '/retrieve/*': {
+    target: process.env.IMAGE_RETRIVAL_SERVICE_URL || 'http://localhost:5040',
     changeOrigin: true,
   },
 };
+
+
+
 
 /*
 import { NestFactory } from '@nestjs/core';
@@ -51,7 +42,7 @@ async function bootstrap() {
     app.use(route, proxy(config));
   });
 
-  const port = process.env.PORT || 8080;
+  const port = process.env.PORT || 5050;
   await app.listen(port, () => {
     console.log(`API Gateway is running on port ${port}`);
   });

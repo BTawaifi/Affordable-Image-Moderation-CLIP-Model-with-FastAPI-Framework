@@ -1,15 +1,6 @@
 // ExternalAuthGuard.ts
-import {
-  CanActivate,
-  ExecutionContext,
-  Injectable,
-  UnauthorizedException,
-} from '@nestjs/common';
-import { Observable } from 'rxjs';
-import { Inject } from '@nestjs/common';
-import { ClientProxy } from '@nestjs/microservices';
+import { CanActivate, ExecutionContext, Injectable, UnauthorizedException } from '@nestjs/common';
 import { HttpService } from '@nestjs/axios';
-import { HttpModule } from '@nestjs/axios';
 
 @Injectable()
 export class ExternalAuthGuard implements CanActivate {
@@ -24,9 +15,7 @@ export class ExternalAuthGuard implements CanActivate {
     }
 
     try {
-      const response = await this.httpService
-        .post('http://localhost:8000/auth/verify-token', { token })
-        .toPromise();
+      const response = await this.httpService.post('http://localhost:5010/auth/verify-token', { token }).toPromise();
 
       const isValid = response.data.isValid;
 
@@ -34,6 +23,7 @@ export class ExternalAuthGuard implements CanActivate {
         throw new UnauthorizedException('Invalid token');
       }
 
+      request.headers.userId = response.data.userId;
       return true;
     } catch (error) {
       throw new UnauthorizedException('Error verifying token');
